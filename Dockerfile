@@ -29,6 +29,14 @@ RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh && \
     chmod +x ./dotnet-install.sh && \ 
     ./dotnet-install.sh --channel 7.0
 
+ENV DOTNET_ROOT "/root/.dotnet"
+ENV PATH "${PATH}:${DOTNET_ROOT}:${DOTNET_ROOT}/tools"
+
+RUN dotnet tool install --global PowerShell
+
+RUN pwsh -c "Install-Module -Name Az -Repository PSGallery -Force"
+RUN pwsh -c "Update-Module -Name Az -Force"
+
 RUN az bicep install --target-platform linux-arm64
 RUN az bicep upgrade
 
@@ -36,9 +44,6 @@ RUN az bicep upgrade
 ENV TARGETARCH=linux-arm64
 
 WORKDIR /azp
-
-ENV DOTNET_ROOT "/root/.dotnet"
-ENV PATH "${PATH}:${DOTNET_ROOT}:${DOTNET_ROOT}/tools"
 
 COPY ./start.sh .
 RUN chmod +x start.sh
