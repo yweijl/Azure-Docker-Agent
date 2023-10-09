@@ -21,7 +21,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommend
     zlib1g \
     zip \
     unzip \
-    wget 
+    wget \
+    jq
 
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
